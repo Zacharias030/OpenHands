@@ -46,21 +46,25 @@ def test_headless_mode_readme_line_count_no_browser():
     # In E2E tests, check if we can connect to port 12000 (frontend)
     # If not, fall back to port 3000 (backend for local dev)
     try:
-        import socket
-
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(1)
         result = sock.connect_ex(('localhost', 12000))
         sock.close()
+        print(f'Socket connection to port 12000 result: {result}')
         if result == 0:
             # Port 12000 is open - E2E test environment
             base_url = 'http://localhost:12000'
+            print('Using E2E environment (port 12000)')
         else:
             # Port 12000 is not open - local development
             base_url = 'http://localhost:3000'
-    except Exception:
+            print('Port 12000 not available, using local dev (port 3000)')
+    except Exception as e:
         # Default to local development
         base_url = 'http://localhost:3000'
+        print(f'Socket test failed: {e}, using local dev (port 3000)')
+
+    print(f'Final base_url: {base_url}')
 
     # In E2E environment, port 12000 should be available
     # In local dev, we skip the test since it requires the full E2E setup
