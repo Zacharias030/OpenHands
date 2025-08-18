@@ -6,6 +6,7 @@ without using any browser actions, as requested in issue #10371.
 """
 
 import os
+import socket
 import time
 from pathlib import Path
 
