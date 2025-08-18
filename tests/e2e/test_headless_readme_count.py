@@ -106,13 +106,17 @@ def test_headless_mode_readme_line_count_no_browser():
 
         while time.time() - start_time < max_wait_time:
             # Get conversation status
+            print(f'Checking conversation status at: {base_url}/api/conversations/{conversation_id}')
             response = requests.get(
                 f'{base_url}/api/conversations/{conversation_id}', timeout=10
             )
+            print(f'Conversation status response: {response.status_code}')
+            if response.status_code != 200:
+                print(f'Conversation status response text: {response.text}')
 
             if response.status_code != 200:
                 pytest.skip(
-                    f'Failed to get conversation status: {response.status_code}'
+                    f'Failed to get conversation status: {response.status_code} - {response.text}'
                 )
 
             conversation = response.json()
