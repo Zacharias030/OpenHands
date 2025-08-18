@@ -62,9 +62,9 @@ def test_headless_mode_readme_line_count_no_browser():
         # Default to local development
         base_url = 'http://localhost:3000'
 
-    # Check if the API is available
+    # Check if the API is available using an endpoint that's proxied through frontend
     try:
-        response = requests.get(f'{base_url}/health', timeout=10)
+        response = requests.get(f'{base_url}/api/options/models', timeout=10)
         if response.status_code != 200:
             pytest.skip('OpenHands API is not available')
     except requests.RequestException:
