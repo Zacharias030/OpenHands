@@ -89,9 +89,13 @@ def test_headless_mode_readme_line_count_no_browser():
 
     try:
         # Start a new conversation
+        print(f'Attempting to create conversation at: {base_url}/api/conversations')
+        print(f'Conversation data: {conversation_data}')
         response = requests.post(
             f'{base_url}/api/conversations', json=conversation_data, timeout=30
         )
+        print(f'Response status: {response.status_code}')
+        print(f'Response text: {response.text}')
 
         if response.status_code != 200:
             pytest.skip(
