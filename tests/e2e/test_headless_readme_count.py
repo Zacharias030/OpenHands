@@ -47,6 +47,7 @@ def test_headless_mode_readme_line_count_no_browser():
     # If not, fall back to port 3000 (backend for local dev)
     try:
         import socket
+
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(1)
         result = sock.connect_ex(('localhost', 12000))
