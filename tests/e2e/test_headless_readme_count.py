@@ -42,8 +42,15 @@ def test_headless_mode_readme_line_count_no_browser():
     # Ensure we have a valid line count
     assert expected_line_count > 0, 'Could not read README.md or file is empty'
 
-    # API base URL (assuming the application is running on localhost:3000)
-    base_url = 'http://localhost:3000'
+    # API base URL (use frontend port for E2E tests, backend port for local dev)
+    frontend_port = os.getenv('FRONTEND_PORT', '12000')
+    if frontend_port == '12000':
+        # E2E test environment - API is proxied through frontend
+        base_url = f'http://localhost:{frontend_port}'
+    else:
+        # Local development - API is on backend port
+        backend_port = os.getenv('BACKEND_PORT', '3000')
+        base_url = f'http://localhost:{backend_port}'
 
     # Check if the API is available
     try:
