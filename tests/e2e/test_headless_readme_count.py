@@ -62,13 +62,10 @@ def test_headless_mode_readme_line_count_no_browser():
         # Default to local development
         base_url = 'http://localhost:3000'
 
-    # Check if the API is available using an endpoint that's proxied through frontend
-    try:
-        response = requests.get(f'{base_url}/api/options/models', timeout=10)
-        if response.status_code != 200:
-            pytest.skip('OpenHands API is not available')
-    except requests.RequestException:
-        pytest.skip('OpenHands API is not available')
+    # In E2E environment, port 12000 should be available
+    # In local dev, we skip the test since it requires the full E2E setup
+    if base_url == 'http://localhost:3000':
+        pytest.skip('Headless test requires E2E environment (port 12000)')
 
     # Create a new conversation with browsing disabled
     conversation_data = {
