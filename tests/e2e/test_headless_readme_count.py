@@ -72,19 +72,10 @@ def test_headless_mode_readme_line_count_no_browser():
     if base_url == 'http://localhost:3000':
         pytest.skip('Headless test requires E2E environment (port 12000)')
 
-    # Create a new conversation with browsing disabled
+    # Create a new conversation with the correct API schema
     conversation_data = {
-        'github_token': os.getenv('GITHUB_TOKEN', ''),
-        'selected_repository': 'All-Hands-AI/OpenHands',
-        'agent': 'CodeActAgent',
-        'language': 'en',
-        'llm_model': os.getenv('LLM_MODEL', 'gpt-4o'),
-        'llm_api_key': os.getenv('LLM_API_KEY', 'test-key'),
-        'llm_base_url': os.getenv('LLM_BASE_URL', ''),
-        'confirmation_mode': False,
-        'security_analyzer': '',
-        'enable_browsing': False,  # Disable browsing for this test
-        'runtime': 'local',
+        'repository': 'All-Hands-AI/OpenHands',
+        'initial_user_msg': 'Count the number of lines in README.md using the wc command and tell me the exact number.',
     }
 
     try:
@@ -107,24 +98,7 @@ def test_headless_mode_readme_line_count_no_browser():
             pytest.skip('No conversation ID returned')
 
         print(f'Created conversation: {conversation_id}')
-
-        # Send the task message
-        task_message = 'Count the number of lines in README.md using the wc command and tell me the exact number.'
-
-        message_data = {'content': task_message, 'images_urls': []}
-
-        response = requests.post(
-            f'{base_url}/api/conversations/{conversation_id}/messages',
-            json=message_data,
-            timeout=30,
-        )
-
-        if response.status_code != 200:
-            pytest.skip(
-                f'Failed to send message: {response.status_code} - {response.text}'
-            )
-
-        print('Sent task message, waiting for response...')
+        print('Initial message sent during conversation creation, waiting for response...')
 
         # Wait for the agent to complete the task
         max_wait_time = 300  # 5 minutes
