@@ -54,7 +54,7 @@ def test_headless_mode_readme_line_count_no_browser():
 
     # Check if the API is available
     try:
-        response = requests.get(f'{base_url}/api/health', timeout=10)
+        response = requests.get(f'{base_url}/health', timeout=10)
         if response.status_code != 200:
             pytest.skip('OpenHands API is not available')
     except requests.RequestException:
